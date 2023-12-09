@@ -40,13 +40,13 @@ function getProductList(){
     axios.get("https://livejs-api.hexschool.io/api/livejs/v1/customer/milktea/products")
     .then(function(response){
         productList = response.data.products;
-        renderProductList(productList)
+        renderProductList(productList);
+        itemFilter()
     })
     .catch(function(error){
         console.log(error)
     })
 }
-// getProductList();
 
 // 將產品列表資料渲染到畫面上
 function renderProductList(productList){
@@ -65,6 +65,42 @@ function renderProductList(productList){
     productWrap.innerHTML = str;
 }
 
+//產品列表過濾功能
+const productSelect = document.querySelector(".productSelect");
+function itemFilter(){
+  productSelect.addEventListener("change", function(e){
+    let str = "";
+    productList.forEach((item)=>{
+      //有選擇分類
+         if(e.target.value == item.category){
+          str += `
+            <li class="productCard">
+            <h4 class="productType">新品</h4>
+            <img src="${item.images}" alt="${item.description}">
+            <a href="#" class="addCardBtn" data-id=${item.id}>加入購物車</a>
+            <h3>${item.title}</h3>
+            <del class="originPrice">NT$${item.origin_price}</del>
+            <p class="nowPrice">NT$${item.price}</p>
+            </li>`;
+        productWrap.innerHTML = str;
+         } 
+         //全部分類
+         else if (e.target.value == "全部"){
+          str += `
+          <li class="productCard">
+          <h4 class="productType">新品</h4>
+          <img src="${item.images}" alt="${item.description}">
+          <a href="#" class="addCardBtn" data-id=${item.id}>加入購物車</a>
+          <h3>${item.title}</h3>
+          <del class="originPrice">NT$${item.origin_price}</del>
+          <p class="nowPrice">NT$${item.price}</p>
+          </li>`;
+        productWrap.innerHTML = str;
+         }
+      })
+  })
+}
+
 
 // 取得購物車列表
 const cartTotal = document.querySelector(".cartTotal");
@@ -73,7 +109,7 @@ function getCartList(){
     .then(function(response){
         cartList = response.data.carts;
         renderCartList(cartList);
-        cartTotal.textContent = response.data.finalTotal
+        cartTotal.textContent = response.data.finalTotal;
     })
     .catch(function(error){
         console.log(error)
@@ -200,3 +236,4 @@ function init(){
     getCartList();
   }
   init();
+
