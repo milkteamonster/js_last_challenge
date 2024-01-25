@@ -152,7 +152,7 @@ cartbuy.addEventListener("click", function (e) {
   });
   function deleteCartItem(cartId) {
     axios
-      .delete("https://livejs-api.hexschool.io/api/livejs/v1/customer/milktea/carts/${cartId}")
+      .delete(`https://livejs-api.hexschool.io/api/livejs/v1/customer/milktea/carts/${cartId}`)
       .then(function (response) {
         alert("刪除單筆購物車成功！");
         getCartList();
@@ -181,7 +181,7 @@ function deleteCart(e){
 const orderInfoBtn = document.querySelector(".orderInfo-btn");
 orderInfoBtn.addEventListener("click",function(e){
   e.preventDefault();
-  if(cartData.length ==0){
+  if(cartList.length == 0){
     alert("請加入購物車");
     return;
   }
